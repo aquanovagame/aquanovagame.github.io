@@ -28,9 +28,9 @@ a{color:#FFD86B}
 .r1{top:-200px;left:18%;width:140px;height:1100px;background:linear-gradient(180deg,rgba(160,235,255,.16),rgba(160,235,255,0));transform:rotate(14deg);filter:blur(18px)}
 .r2{top:-220px;left:46%;width:90px;height:1000px;background:linear-gradient(180deg,rgba(160,235,255,.13),rgba(160,235,255,0));transform:rotate(-6deg);filter:blur(14px)}
 .r3{top:-180px;right:16%;width:160px;height:1200px;background:linear-gradient(180deg,rgba(160,235,255,.12),rgba(160,235,255,0));transform:rotate(-16deg);filter:blur(22px)}
-.bubble{position:absolute;border-radius:50%;border:2px solid rgba(160,235,255,.35);background:radial-gradient(circle at 30% 30%,rgba(255,255,255,.35),rgba(160,235,255,.05) 60%);animation:rise linear infinite;pointer-events:none}
+.bubble{position:absolute;border-radius:50%;border:2px solid rgba(160,235,255,.35);background:radial-gradient(circle at 30% 30%,rgba(255,255,255,.35),rgba(160,235,255,.05) 60%);animation:rise linear infinite;pointer-events:none;z-index:0}
 @keyframes rise{from{transform:translateY(0)}to{transform:translateY(-120vh)}}
-.wrap{position:relative;max-width:760px;margin:0 auto;padding:0 16px}
+.wrap{position:relative;z-index:1;max-width:760px;margin:0 auto;padding:0 16px}
 header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:20px 0 16px}
 .brand{display:flex;align-items:center;gap:10px;font-family:Fredoka,sans-serif;font-weight:700;font-size:26px;letter-spacing:.5px;color:#fff}
 .brand img{width:40px;height:40px;border-radius:11px;box-shadow:0 4px 14px rgba(0,10,40,.5)}
@@ -70,7 +70,7 @@ body.tr [data-lang="en"],body.en [data-lang="tr"]{display:none !important}
 <div class="ray r1" aria-hidden="true"></div><div class="ray r2" aria-hidden="true"></div><div class="ray r3" aria-hidden="true"></div>
 <div class="wrap">
 <header>
-  <div class="brand"><img src="icon.png" alt="">Aqua<span>Nova</span></div>
+  <div class="brand"><img src="icon.png" alt=""><div>Aqua<span>Nova</span></div></div>
   <div class="lang" role="group" aria-label="Dil / Language">
     <button type="button" id="bTr" aria-pressed="true">Türkçe</button>
     <button type="button" id="bEn" aria-pressed="false">English</button>
