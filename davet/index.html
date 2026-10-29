@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AquaNova Daveti</title>
+<meta property="og:title" content="AquaNova'ya davetlisin!">
+<meta property="og:description" content="Okyanusta eşleştir, canlıları kurtar. Hemen indir, birlikte oynayalım!">
+<style>
+  :root { --sea1: #0b3a7e; --sea2: #1aa3e0; --text: #ffffff; --gold: #ffd75a; --green: #35c43a; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center;
+    font-family: "Trebuchet MS", "Segoe UI", Arial, sans-serif; color: var(--text);
+    background: radial-gradient(circle at 50% 0%, var(--sea2), var(--sea1) 70%); padding: 24px 16px;
+  }
+  .card { width: 100%; max-width: 420px; text-align: center; }
+  h1 { font-size: 44px; margin: 0 0 8px; letter-spacing: 1px; text-shadow: 0 4px 0 rgba(0, 30, 80, .45); }
+  h1 span { color: var(--gold); }
+  p { font-size: 18px; line-height: 1.45; margin: 0 0 22px; }
+  .who { font-weight: bold; color: var(--gold); }
+  .btn {
+    display: block; margin: 12px auto; padding: 16px 20px; width: 100%; border-radius: 40px;
+    font-size: 20px; font-weight: bold; color: #fff; text-decoration: none;
+    box-shadow: 0 5px 0 rgba(0, 0, 0, .25);
+  }
+  .play { background: var(--green); }
+  .store { background: #1f6fd6; }
+  .hint { font-size: 14px; opacity: .8; margin-top: 18px; }
+</style>
+</head>
+<body>
+<div class="card">
+  <h1>Aqua<span>Nova</span></h1>
+  <p id="msg">Okyanusta eşleştir, canlıları kurtar!<br>Hemen indir, birlikte oynayalım.</p>
+  <a class="btn play" id="open" href="#">OYUNU AÇ / İNDİR</a>
+  <a class="btn store" id="android" href="#">Google Play'den indir</a>
+  <a class="btn store" id="ios" href="https://apps.apple.com/app/id6827665682">App Store'dan indir</a>
+  <div class="hint">Oyun yüklüyse açılır, değilse mağaza sayfası gelir.</div>
+</div>
+<script>
+  // Davet linki: https://.../davet/?from=<kaptan adı>  (Assets/_Project/Scripts/Gameplay/InviteRewards.cs)
+  // Android: intent:// oyunu açar; yüklü değilse Play Store'a düşer, linkteki referrer davet edeni oyuna taşır
+  // (InviteReferrer.cs). iPhone: aquanova:// oyunu açar; açılmazsa App Store sayfasına geçilir.
+  var from = new URLSearchParams(location.search).get("from") || "";
+  var enc = encodeURIComponent(from);
+  var play = "https://play.google.com/store/apps/details?id=com.aquanova.game" +
+             (from ? "&referrer=" + encodeURIComponent("inviter=" + from) : "");
+  var appStore = "https://apps.apple.com/app/id6827665682";
+  var deep = "aquanova://davet" + (from ? "?from=" + enc : "");
+  var intent = "intent://davet" + (from ? "?from=" + enc : "") +
+               "#Intent;scheme=aquanova;package=com.aquanova.game;S.browser_fallback_url=" + encodeURIComponent(play) + ";end";
+  var ua = navigator.userAgent || "";
+  var android = /Android/i.test(ua);
+  var ios = /iPhone|iPad|iPod/i.test(ua) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+
+  if (from) {
+    var msg = document.getElementById("msg");
+    msg.textContent = "";
+    var who = document.createElement("span");
+    who.className = "who";
+    who.textContent = from;
+    msg.appendChild(who);
+    msg.appendChild(document.createTextNode(" seni AquaNova'ya davet etti! Okyanusta eşleştir, canlıları kurtar."));
+  }
+
+  document.getElementById("android").href = play;
+  var open = document.getElementById("open");
+  open.href = android ? intent : ios ? deep : play;
+  if (!android) document.getElementById("android").style.display = ios ? "none" : "block";
+  if (android) document.getElementById("ios").style.display = "none";
+
+  function goIos() {
+    location.href = deep;
+    setTimeout(function () { if (!document.hidden) location.href = appStore; }, 1600);
+  }
+  open.addEventListener("click", function (e) { if (ios) { e.preventDefault(); goIos(); } });
+
+  // Sayfa açılır açılmaz kendiliğinden dener (düğmeler yedek).
+  if (android) location.href = intent;
+  else if (ios) goIos();
+</script>
+</body>
+</html>
